@@ -88,11 +88,12 @@
 }
 
 .gif-grid {
-  width: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  grid-template-rows: repeat(auto-fit, minmax(300px, 1fr));
-  grid-row-gap: 15px;
+  grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+  grid-gap: 1.5rem;
+  justify-items: center;
+  margin: 0;
+  padding: 0;
 }
 
 .gif-grid .gif-item {
@@ -104,8 +105,8 @@
 }
 
 .gif-item img {
+  width: 100%;
   height: 300px;
-  width: 350px;
   border-radius: 10px;
   object-fit: cover;
 }
