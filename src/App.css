@@ -1,3 +1,5 @@
+/** @format */
+
 .App {
   height: 100vh;
   background-color: #1a202c;
@@ -111,7 +113,7 @@
   object-fit: cover;
 }
 
-.connected-container input[type='text'] {
+.connected-container input[type="text"] {
   display: inline-block;
   color: white;
   padding: 10px;
@@ -127,4 +129,16 @@
 
 .connected-container button {
   height: 50px;
+}
+
+.upvote-container {
+  border: 1px solid grey;
+  padding: 5px;
+  margin-right: 10px;
+}
+
+.upvote-container:hover {
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #4e44ce;
 }
