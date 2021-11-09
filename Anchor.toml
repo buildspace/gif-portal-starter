@@ -1,0 +1,12 @@
+[programs.localnet]
+budshrine = "Dg3kKZW27NjakKN8Pur7S5PPa19c9o5icoiBXiB7A11h"
+
+[registry]
+url = "https://anchor.projectserum.com"
+
+[provider]
+cluster = "localnet"
+wallet = "/Users/thomas/.config/solana/id.json"
+
+[scripts]
+test = "ts-mocha -p ./tsconfig.mocha.json -t 1000000 tests/*.ts"
