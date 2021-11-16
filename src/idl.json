@@ -51,6 +51,11 @@
           "name": "baseAccount",
           "isMut": true,
           "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": false,
+          "isSigner": true
         }
       ],
       "args": [
@@ -67,6 +72,11 @@
           "name": "baseAccount",
           "isMut": true,
           "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": false,
+          "isSigner": true
         }
       ],
       "args": [
@@ -116,6 +126,12 @@
           {
             "name": "likes",
             "type": "u64"
+          },
+          {
+            "name": "likedByList",
+            "type": {
+              "vec": "publicKey"
+            }
           }
         ]
       }
