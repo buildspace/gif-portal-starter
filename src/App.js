@@ -132,7 +132,7 @@ const App = () => {
       const provider = getProvider();
       const program = new Program(idl, programID, provider);
 
-      await program.rpc.increaseGifLikes(gifLink, {
+      await program.rpc.likeGif(gifLink, {
         accounts: {
           baseAccount: baseAccount.publicKey,
           user: provider.wallet.publicKey
@@ -155,7 +155,7 @@ const App = () => {
       const provider = getProvider();
       const program = new Program(idl, programID, provider);
 
-      await program.rpc.decreaseGifLikes(gifLink, {
+      await program.rpc.unLikeGif(gifLink, {
         accounts: {
           baseAccount: baseAccount.publicKey,
           user: provider.wallet.publicKey
