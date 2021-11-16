@@ -9,20 +9,8 @@ import './App.css';
 // Constants
 const TWITTER_HANDLE = '_buildspace';
 const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`;
-const TEST_GIFS = [
-  'https://media1.giphy.com/media/6DsvupGsbVTEc/200w.webp?cid=ecf05e470bklfms9b5be913kodno9a10s0rxcg8bjcpp4h3m&rid=200w.webp&ct=g',
-  'https://media.giphy.com/media/CKAdUL5cM0zC0/giphy.gif',
-  'https://media3.giphy.com/media/aDS8SjVtS3Mwo/200.webp?cid=ecf05e470bklfms9b5be913kodno9a10s0rxcg8bjcpp4h3m&rid=200.webp&ct=g',
-  'https://media2.giphy.com/media/c4p59oQhRFE1W/giphy.webp?cid=ecf05e47wy8s9b7vkmki2hf86dlzoqcjsq7uoa36j8o4lvjb&rid=giphy.webp&ct=g',
-  'https://media1.giphy.com/media/Advd8M8jbsoG4/200.webp?cid=ecf05e47qvtgefwu9pdpt3lujw6rye1r15087yvswnps092i&rid=200.webp&ct=g',
-  'https://media2.giphy.com/media/4hggD9I4GjwuQ/200.webp?cid=ecf05e47qvtgefwu9pdpt3lujw6rye1r15087yvswnps092i&rid=200.webp&ct=g',
-  'https://media0.giphy.com/media/4fCFRodZ5tJu0/200w.webp?cid=ecf05e47qvtgefwu9pdpt3lujw6rye1r15087yvswnps092i&rid=200w.webp&ct=g',
-  'https://media3.giphy.com/media/jh7F7XwHTywg85ekdl/200w.webp?cid=ecf05e4781vzhmetwhitl4amet1azwbzn4pr2ek93tf4604h&rid=200w.webp&ct=g',
-  'https://media2.giphy.com/media/fTn01fiFdTd5pL60ln/200w.webp?cid=ecf05e4781vzhmetwhitl4amet1azwbzn4pr2ek93tf4604h&rid=200w.webp&ct=g',
-  'https://media2.giphy.com/media/1tWfO5cOkdF3uGG0Ix/200w.webp?cid=ecf05e4781vzhmetwhitl4amet1azwbzn4pr2ek93tf4604h&rid=200w.webp&ct=g'
-]
 
-const { SystemProgram, Keypair } = web3;
+const { SystemProgram } = web3;
 
 // the keypair for the account that will hold the GIF data.
 const arr = Object.values(kp._keypair.secretKey);
