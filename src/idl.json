@@ -43,6 +43,38 @@
           "type": "string"
         }
       ]
+    },
+    {
+      "name": "increaseGifLikes",
+      "accounts": [
+        {
+          "name": "baseAccount",
+          "isMut": true,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "gifLink",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "decreaseGifLikes",
+      "accounts": [
+        {
+          "name": "baseAccount",
+          "isMut": true,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "gifLink",
+          "type": "string"
+        }
+      ]
     }
   ],
   "accounts": [
@@ -80,6 +112,10 @@
           {
             "name": "userAddress",
             "type": "publicKey"
+          },
+          {
+            "name": "likes",
+            "type": "u64"
           }
         ]
       }
