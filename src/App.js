@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Connection, PublicKey, clusterApiUrl } from "@solana/web3.js";
 import { Program, Provider, web3 } from "@project-serum/anchor"; 
+import { AiOutlineLike, AiFillLike, AiOutlineLoading } from "react-icons/ai";
+
+
 import twitterLogo from './assets/twitter-logo.svg';
 import idl from './idl.json';
 import kp from "./keypair.json";
@@ -28,6 +31,8 @@ const opts = {
 }
 
 const App = () => {
+  const [busy, setBusy] = useState(false);
+  const [activeGif, setActiveGif] = useState("");
   const [walletAddress, setWalletAddress] = useState(null);
   const [inputValue, setInputValue] = useState('');
   const [gifList, setGifList] = useState([]);
@@ -112,12 +117,59 @@ const App = () => {
           user: provider.wallet.publicKey
         }
       });
+      setInputValue("");
       console.log("GIF successfully sent to program", inputValue);
       await getGifList();
     } catch (error) {
       console.log("Error sending GIF:", error);
     }
   };
+
+  const likeGif = async(gifLink) => {
+    setBusy(true);
+    setActiveGif(gifLink);
+    try {
+      const provider = getProvider();
+      const program = new Program(idl, programID, provider);
+
+      await program.rpc.increaseGifLikes(gifLink, {
+        accounts: {
+          baseAccount: baseAccount.publicKey,
+          user: provider.wallet.publicKey
+        }
+      })
+      console.log("liked GIF successfully");
+      await getGifList();
+      setBusy(false);
+      setActiveGif("")
+    } catch (error) {
+      setBusy(false);
+      console.log("Error liking GIF:", error)
+    }
+  }
+
+  const unLikeGif = async(gifLink) => {
+    setBusy(true);
+    setActiveGif(gifLink);
+    try {
+      const provider = getProvider();
+      const program = new Program(idl, programID, provider);
+
+      await program.rpc.decreaseGifLikes(gifLink, {
+        accounts: {
+          baseAccount: baseAccount.publicKey,
+          user: provider.wallet.publicKey
+        }
+      })
+      console.log("removed like successfully");
+      await getGifList();
+      setBusy(false);
+      setActiveGif("")
+    } catch (error) {
+      setBusy(true);
+      console.log("error removing like:", error);
+    }
+  }
 
   const onInputChange = (event) => {
     const { value } = event.target;
@@ -168,11 +220,28 @@ const App = () => {
             <button type="submit" className="cta-button submit-gif-button">Submit</button>
           </form>
           <div className="gif-grid">
-            {gifList.map(gif => (
-              <div className="gif-item" key={gif.gifLink}>
-                <img src={gif.gifLink} alt={gif} />
-              </div>
-            ))}
+            {gifList.map(gif => {
+              const liked = gif.likedByList.find(item => item.toString() === walletAddress)
+              return (
+                <div className="gif-item" key={gif.gifLink}>
+                  <img src={gif.gifLink} alt={gif} />
+                  <button
+                    onClick={liked ? () => unLikeGif(gif.gifLink) : () => likeGif(gif.gifLink)}
+                    disabled={busy}
+                    className="w-[fit-content] p-2 flex flex-row items-end"
+                  >
+                    {busy && activeGif === gif.gifLink ? (
+                      <AiOutlineLoading color="white" className="animate-spin" />
+                    ) : (
+                      liked ? <AiFillLike size={25} /> : <AiOutlineLike size={25} color="white" />
+                    )}
+                    <p
+                      className="text-white font-medium ml-2 text-[18px]"
+                    >
+                      {gif.likes.toString()}</p>
+                  </button>
+                </div>
+              )})}
           </div>
         </div>
       )
