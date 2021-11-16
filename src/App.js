@@ -225,6 +225,7 @@ const App = () => {
               return (
                 <div className="gif-item" key={gif.gifLink}>
                   <img src={gif.gifLink} alt={gif} />
+                  <p className="text-white mt-1">user: <strong>{gif.userAddress.toString()}</strong></p>
                   <button
                     onClick={liked ? () => unLikeGif(gif.gifLink) : () => likeGif(gif.gifLink)}
                     disabled={busy}
