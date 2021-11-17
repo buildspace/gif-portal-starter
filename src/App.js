@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Connection, PublicKey, clusterApiUrl, Transaction, TransactionInstruction, SystemInstruction } from "@solana/web3.js";
+import React, { useEffect, useState, useCallback } from "react";
+import { Connection, PublicKey, clusterApiUrl, Transaction } from "@solana/web3.js";
 import { Program, Provider, web3 } from "@project-serum/anchor"; 
 import { AiOutlineLike, AiFillLike, AiOutlineLoading } from "react-icons/ai";
 
@@ -8,7 +8,6 @@ import twitterLogo from './assets/twitter-logo.svg';
 import idl from './idl.json';
 import kp from "./keypair.json";
 import './App.css';
-import { BN } from "bn.js";
 
 // Constants
 const TWITTER_HANDLE = '_buildspace';
@@ -70,7 +69,7 @@ const App = () => {
     }
   }
 
-  const getGifList = async() => {
+  const getGifList = useCallback(async() => {
     try {
       const provider = getProvider();
       const program = new Program(idl, programID, provider);
@@ -82,7 +81,7 @@ const App = () => {
       console.log("Error in getGifList:", error);
       setGifList(null)
     }
-  }
+  }, [])
 
   const createGifAccount = async() => {
     try {
@@ -326,7 +325,7 @@ const App = () => {
 
       getGifList()
     }
-  }, [walletAddress])
+  }, [walletAddress, getGifList])
 
   return (
     <div className="App">
