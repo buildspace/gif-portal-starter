@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Connection, PublicKey, clusterApiUrl } from "@solana/web3.js";
+import { Connection, PublicKey, clusterApiUrl, Transaction, TransactionInstruction, SystemInstruction } from "@solana/web3.js";
 import { Program, Provider, web3 } from "@project-serum/anchor"; 
 import { AiOutlineLike, AiFillLike, AiOutlineLoading } from "react-icons/ai";
 
@@ -8,6 +8,7 @@ import twitterLogo from './assets/twitter-logo.svg';
 import idl from './idl.json';
 import kp from "./keypair.json";
 import './App.css';
+import { BN } from "bn.js";
 
 // Constants
 const TWITTER_HANDLE = '_buildspace';
@@ -35,6 +36,8 @@ const App = () => {
   const [activeGif, setActiveGif] = useState("");
   const [walletAddress, setWalletAddress] = useState(null);
   const [inputValue, setInputValue] = useState('');
+  const [tip, setTip] = useState("");
+  const [showTipInput, setShowTipInput] = useState(false);
   const [gifList, setGifList] = useState([]);
 
   const checkIfWalletIsConnected = async() => {
@@ -171,6 +174,37 @@ const App = () => {
     }
   }
 
+  const tipUser = async(data) => {
+    setBusy(true);
+    setActiveGif(data.gifLink);
+    try {
+      const provider = getProvider();
+      const recentBlockhash = await provider.connection.getRecentBlockhash();
+      const transaction = new Transaction();
+      transaction.instructions = [
+        SystemProgram.transfer({
+          fromPubkey: provider.wallet.publicKey,
+          lamports: web3.LAMPORTS_PER_SOL * parseInt(tip),
+          programId: SystemProgram.programId,
+          toPubkey: data.userAddress,
+        })
+      ]
+      transaction.recentBlockhash = recentBlockhash.blockhash;
+      transaction.feePayer = provider.wallet.publicKey
+      const signedTransaction = await window.solana.signTransaction(transaction);
+      const signature = await provider.connection.sendRawTransaction(signedTransaction.serialize());
+      console.log("transaction success: ", signature);
+      setBusy(false)
+      setActiveGif(null)
+      setShowTipInput(false);
+      alert(`Transaction Success: ${signature}`);
+    } catch (error) {
+      setBusy(true);
+      setActiveGif(null)
+      console.log(("transaction failed: ", error));
+    }
+  }
+
   const onInputChange = (event) => {
     const { value } = event.target;
     setInputValue(value);
@@ -225,22 +259,52 @@ const App = () => {
               return (
                 <div className="gif-item" key={gif.gifLink}>
                   <img src={gif.gifLink} alt={gif} />
-                  <p className="text-white mt-1">user: <strong>{gif.userAddress.toString()}</strong></p>
-                  <button
-                    onClick={liked ? () => unLikeGif(gif.gifLink) : () => likeGif(gif.gifLink)}
-                    disabled={busy}
-                    className="w-[fit-content] p-2 flex flex-row items-end"
+                  <p className="mt-1 text-white">user: <strong>{gif.userAddress.toString()}</strong></p>
+                  <div
+                    className="flex flex-row items-center mt-2 space-x-6"
                   >
-                    {busy && activeGif === gif.gifLink ? (
-                      <AiOutlineLoading color="white" className="animate-spin" />
-                    ) : (
-                      liked ? <AiFillLike size={25} /> : <AiOutlineLike size={25} color="white" />
-                    )}
-                    <p
-                      className="text-white font-medium ml-2 text-[18px]"
+                    <button
+                      onClick={liked ? () => unLikeGif(gif.gifLink) : () => likeGif(gif.gifLink)}
+                      disabled={busy}
+                      className="w-[fit-content] p-2 flex flex-row items-end"
                     >
-                      {gif.likes.toString()}</p>
-                  </button>
+                      {busy && activeGif === gif.gifLink ? (
+                        <AiOutlineLoading color="white" className="animate-spin" />
+                      ) : (
+                        liked ? <AiFillLike size={25} /> : <AiOutlineLike size={25} color="white" />
+                      )}
+                      <p
+                        className="text-white font-medium ml-2 text-[18px]"
+                      >
+                        {gif.likes.toString()}</p>
+                    </button>
+                    <button
+                      onClick={() => {
+                        setShowTipInput(!showTipInput);
+                        setActiveGif(gif.gifLink);
+                      }}
+                      className="text-white font-bold submit-gif-button h-[fit-content] px-4 rounded"
+                    >
+                      Tip User!
+                    </button>
+                  </div>
+                  {showTipInput && activeGif === gif.gifLink && (
+                    <div
+                      className="flex flex-row items-center space-x-2"
+                    >
+                      <input 
+                        onChange={(e) => setTip(e.target.value)}
+                        placeholder="Enter amount in SOL"
+                        className="w-[200px] rounded p-2"
+                      />
+                      <button
+                        onClick={() => tipUser(gif)}
+                        className="submit-gif-button text-white font-bold w-[200px] capitalize px-4 rounded"
+                      >
+                        Send tip
+                      </button>
+                    </div>
+                  )}
                 </div>
               )})}
           </div>
