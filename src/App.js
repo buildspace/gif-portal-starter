@@ -16,7 +16,26 @@ const TEST_GIFS = [
 const App = () => {
 
   const [walletAddress, setWalletAddress] = useState(null);
+  const [gifList, setGifList] = useState([]);
+  const [gifInput, setGifInput] = useState("");
 
+  //handlers
+  const gifSubmitHandler = (e) => {
+    e.preventDefault();
+    if (gifInput.length > 0) {
+      console.log("Sending gif...");
+      sendGif();
+    } else {
+      console.log("gif link is empty. nothing submitted.")
+    }
+  };
+
+  const gifInputChangeHandler = (e) => {
+    const { value } = e.target;
+    setGifInput(value);
+  };
+
+  // solana object utils
   const checkIfWalletIsConnected = async () => {
     try {
       const { solana } = window;
@@ -46,10 +65,23 @@ const App = () => {
     }
   };
 
+  const sendGif = async () => {
+    console.log("new gif:", gifInput);
+    setGifList([...gifList, gifInput]);
+    setGifInput("");
+  };
+
+  //container renders
   const renderConnectedContainer = () => (
     <div className="connected-container">
+      <form onSubmit={gifSubmitHandler} >
+        <input placeholder="Paste your gif link here!" type="text" value={gifInput} onChange={gifInputChangeHandler}/>
+        <button type="submit" className="cta-button submit-gif-button">
+          Submit
+        </button>
+      </form>
       <div className="gif-grid">
-        {TEST_GIFS.map(gif => (
+        {gifList.map(gif => (
           <div className="gif-item" key={gif} >
             <img src={gif} alt={gif}/>
           </div>
@@ -75,6 +107,13 @@ const App = () => {
     window.addEventListener("load", onLoad);
     return () => window.removeEventListener("load", onLoad);
   }, []);
+
+  useEffect(() => {
+    if (walletAddress) {
+      console.log("Fetching list of Gifs...")
+      setGifList(TEST_GIFS);
+    }
+  }, [walletAddress])
 
   return (
     <div className="App">
