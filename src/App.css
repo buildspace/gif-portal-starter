@@ -1,13 +1,14 @@
 .App {
   height: 100vh;
   background-color: #1a202c;
-  overflow: scroll;
+  overflow: auto;
   text-align: center;
 }
 
 .container {
   height: 100%;
   display: flex;
+  position: relative;
   flex-direction: column;
   justify-content: center;
   padding: 0 30px 0 30px;
