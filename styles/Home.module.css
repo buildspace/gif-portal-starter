@@ -1,4 +1,4 @@
-.App {
+.app {
   height: 100vh;
   background-color: #1a202c;
   overflow: auto;
@@ -75,11 +75,6 @@
   bottom: 0;
   left: 0;
   padding-bottom: 45px;
-}
-
-.twitter-logo {
-  width: 35px;
-  height: 35px;
 }
 
 .footer-text {
