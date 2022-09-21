@@ -51,6 +51,11 @@
   font-size: 16px;
   font-weight: bold;
   color: white;
+  cursor: pointer;
+}
+
+.cta-button:hover {
+  opacity: 0.8;
 }
 
 .connect-wallet-button {
@@ -112,7 +117,7 @@
   object-fit: cover;
 }
 
-.connected-container input[type='text'] {
+.connected-container input[type="text"] {
   display: inline-block;
   color: white;
   padding: 10px;
