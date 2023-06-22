@@ -1,5 +1,6 @@
 import twitterLogo from './assets/twitter-logo.svg';
 import './App.css';
+import React from 'react';
 
 // Constants
 const TWITTER_HANDLE = '_buildspace';
